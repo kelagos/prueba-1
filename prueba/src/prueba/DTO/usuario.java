@@ -53,7 +53,9 @@ public class usuario {
     }
 
     public void setNombreUsuario(String NombreUsuario) {
-        this.NombreUsuario = NombreUsuario;
+        if(NombreUsuario.length() > 4){
+        this.NombreUsuario = NombreUsuario;    
+        }
     }
 
     public String getNombreCompleto() {
