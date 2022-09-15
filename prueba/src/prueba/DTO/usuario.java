@@ -9,7 +9,7 @@ public class usuario {
     private String NombreUsuario;
     private String Mail;
     private int Edad;
-    private int Telefono;
+    private int Telefono
     
     
     
