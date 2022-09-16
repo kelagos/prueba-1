@@ -9,7 +9,9 @@ public class usuario {
     private String NombreUsuario;
     private String NombreCompleto;
     private String Mail;
-    private int Telefono;
+    private String Telefono;
+    private String Clave;
+    private String FechaNacimiento;
     
     
     public usuario (){
@@ -19,9 +21,27 @@ public class usuario {
         this.NombreUsuario="";
         this.NombreCompleto="";
         this.Mail="";
-        this.Telefono=0;
+        this.Telefono="";
+        this.Clave="";
+        this.FechaNacimiento="";
         
         
+    }
+
+    public String getFechaNacimiento() {
+        return FechaNacimiento;
+    }
+
+    public void setFechaNacimiento(String FechaNacimiento) {
+        this.FechaNacimiento = FechaNacimiento;
+    }
+
+    public String getClave() {
+        return Clave;
+    }
+
+    public void setClave(String Clave) {
+        this.Clave = Clave;
     }
 
     public int getId() {
@@ -54,7 +74,7 @@ public class usuario {
 
     public void setNombreUsuario(String NombreUsuario) {
         if(NombreUsuario.length() > 4){
-        this.NombreUsuario = NombreUsuario;    
+            this.NombreUsuario = NombreUsuario;
         }
     }
 
@@ -71,21 +91,62 @@ public class usuario {
     }
 
     public void setMail(String Mail) {
-        if (Mail.length() < 6){
+        if (Mail.contains("@")&& (Mail.contains(".com") && (Mail.contains(".cl")))) {
         this.Mail = Mail;    
         } 
     }
 
-    public int getTelefono() {
+    public String getTelefono() {
         return Telefono;
     }
 
-    public void setTelefono(int Telefono) {
-        if(Telefono >9999999){
-        this.Telefono = Telefono;
+    public void setTelefono(String Telefono) {
+        if(Telefono.length()>8 && Telefono.startsWith("56")){
+            this.Telefono = Telefono;
         }
     }
     
     
+    public boolean validarRun(int Run, char Dv) {
+        boolean validacion = false;
+        try {
+            int m = 0, s = 1;
+            for (; Run != 0; Run /= 10) {
+                s = (s + Run % 10 * (9 - m++ % 6)) % 11;
+            }
+            if (Dv == (char) (s != 0 ? s + 47 : 75)) {
+                validacion = true;
+            }
+
+        } catch (java.lang.NumberFormatException e) {
+        } catch (Exception e) {
+        }
+        return validacion;
+        
+
+    }
+        
     
+    public String iniciarSesion(String NombreUsuario, String Clave) {
+        if (NombreUsuario.equals(this.NombreUsuario) && Clave.equals(this.Clave)) {
+            return "Inicio de Sesion Correcto";
+        } else {
+            return "Usuario o Contraseña Incorrecta";
+        }
+
+    }        
+
+    private Date validarFechaNacimiento(String fecha){
+        Date FechaNacimiento = validarFecha(fecha);
+        if(FechaNacimiento != null){
+            Date actual = new Date();
+            int anioNacimiento = FechaNacimiento.getYear();
+            int anioActual = actual.getYear();
+            if(anioActual - anioNacimiento > 17) {
+                return FechaNacimiento;
+            }
+        }
+        System.out.println("Fecha de nacimiento no valido: " + fecha); 
+        return null;
+    }
 }
